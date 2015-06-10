@@ -39,6 +39,14 @@ add_action('save_post', 'post_to_sqs');
 
 function post_to_sqs($post_id)
 {
-
+	$url = "http://new.site.com/update/wp-post?post_id=".$post_id;
+	$ch = curl_init(); 
+	curl_setopt($ch, CURLOPT_URL, $url); 
+	curl_setopt($ch, CURLOPT_HEADER, TRUE); 
+	curl_setopt($ch, CURLOPT_NOBODY, TRUE); // remove body 
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); 
+	$head = curl_exec($ch); 
+	$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
+	curl_close($ch);
 }
 
