@@ -29,6 +29,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+use Aws\Sqs\SqsClient;
+
 // Make sure we don't expose any info if called directly
 if ( !function_exists( 'add_action' ) ) {
 	echo 'Hi there!  I\'m just a plugin, not much I can do when called directly.';
@@ -39,6 +41,29 @@ add_action('save_post', 'post_to_sqs');
 
 function post_to_sqs($post_id)
 {
+	/* Code for Adding to SQS Queue. Not Tested Yet
+	$client = SqsClient::factory(array(
+	    'profile' => '<profile in your aws credentials file>',
+	    'region'  => 'region-name'
+	));
+
+	$result = $client->createQueue(array(
+	    'QueueName'  => 'wp-post-id',
+	    'Attributes' => array(
+	        'DelaySeconds'       => 5,
+	        'MaximumMessageSize' => 4096, // 4 KB
+	    ),
+	));
+
+	$queueUrl = $result->get('QueueUrl');
+
+	$client->sendMessage(array(
+	    'QueueUrl'    => $queueUrl,
+	    'MessageBody' => $post_id,
+	));
+
+	*/
+	
 	$url = "http://new.site.com/update/wp-post/".$post_id;
 	$ch = curl_init(); 
 	curl_setopt($ch, CURLOPT_URL, $url); 
