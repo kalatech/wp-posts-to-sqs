@@ -63,15 +63,24 @@ function post_to_sqs($post_id)
 	));
 
 	*/
-	
-	$url = "http://new.site.com/update/wp-post/".$post_id;
+	$url_qa = "http://new.site.com/update/wp-post/".$post_id;
+
+	_make_request($url_qa);
+
+	$url_prod = "http://new.site.com/update/wp-post/".$post_id;
+
+	_make_request($url_prod);
+}
+
+function _make_request($url)
+{
 	$ch = curl_init(); 
-	curl_setopt($ch, CURLOPT_URL, $url); 
-	curl_setopt($ch, CURLOPT_HEADER, TRUE); 
-	curl_setopt($ch, CURLOPT_NOBODY, TRUE); // remove body 
+	curl_setopt($ch, CURLOPT_URL, $url);
+	curl_setopt($ch, CURLOPT_HEADER, TRUE);
+	curl_setopt($ch, CURLOPT_NOBODY, TRUE); // remove body
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); 
-	$head = curl_exec($ch); 
-	$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
+	$head = curl_exec($ch);
+	$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 	curl_close($ch);
 }
 
